@@ -12,39 +12,25 @@ spec:
     targetRevision: 57.2.0
     helm:
       values: |
-        crds:
-          enabled: false
-
         grafana:
           enabled: true
-          adminPassword: admin
 
         prometheus:
+          enabled: true
           prometheusSpec:
             retention: 7d
 
-        prometheus-node-exporter:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: node-role.kubernetes.io/control-plane
-                        operator: DoesNotExist
+        alertmanager:
+          enabled: true
 
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
 
-  ignoreDifferences:
-    - group: apiextensions.k8s.io
-      kind: CustomResourceDefinition
-      jqPathExpressions:
-        - .
-
   syncPolicy:
     automated:
+      prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - RespectIgnoreDifferences=true
+      - Replace=true
