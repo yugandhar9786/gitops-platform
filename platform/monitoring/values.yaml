@@ -5,6 +5,7 @@ grafana:
     type: ClusterIP
 
 prometheus:
+  enabled: true
   prometheusSpec:
     retention: 7d
     serviceMonitorSelectorNilUsesHelmValues: false
