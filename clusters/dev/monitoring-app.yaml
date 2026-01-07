@@ -11,8 +11,27 @@ spec:
     chart: kube-prometheus-stack
     targetRevision: 57.2.0
     helm:
-      valueFiles:
-        - ../../platform/monitoring/values.yaml
+  values: |
+    grafana:
+      enabled: true
+      adminPassword: admin
+      service:
+        type: ClusterIP
+
+    prometheus:
+      prometheusSpec:
+        retention: 7d
+        serviceMonitorSelectorNilUsesHelmValues: false
+
+    alertmanager:
+      enabled: true
+
+    kubeStateMetrics:
+      enabled: true
+
+    nodeExporter:
+      enabled: true
+
 
   destination:
     server: https://kubernetes.default.svc
